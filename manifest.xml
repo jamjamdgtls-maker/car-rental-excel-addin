@@ -10,29 +10,18 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Car Rental Tracker (Excel Add-in)"/>
   <Description DefaultValue="Excel-as-database: Vehicles, Customers, Rentals, Maintenance."/>
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-80.png"/>
-  <SupportUrl DefaultValue="https://localhost:3000/"/>
+  <IconUrl DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/assets/icon-32.png"/>
+  <SupportUrl DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/"/>
   <AppDomains>
-    <AppDomain>https://localhost:3000</AppDomain>
+    <AppDomain>https://jamjamdgtls-maker.github.io</AppDomain>
   </AppDomains>
-
-  <Hosts>
-    <Host Name="Workbook"/>
-  </Hosts>
-
-  <Requirements>
-    <Sets DefaultMinVersion="1.13">
-      <Set Name="ExcelApi"/>
-    </Sets>
-  </Requirements>
-
+  <Hosts><Host Name="Workbook"/></Hosts>
+  <Requirements><Sets DefaultMinVersion="1.13"><Set Name="ExcelApi"/></Sets></Requirements>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+    <SourceLocation DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/taskpane.html"/>
   </DefaultSettings>
-
   <Permissions>ReadWriteDocument</Permissions>
-
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="ov:VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Workbook">
@@ -47,11 +36,9 @@
             <OfficeTab id="TabHome">
               <Group id="Group.Taskpane" label="Car Rental">
                 <Control xsi:type="Button" id="TaskpaneButton"
-                         label="Open Tracker"
-                         screentip="Open Car Rental Tracker"
-                         supertip="Open the task pane"
-                         onAction="showTaskpane"
-                         icon="resid.Icon.16"/>
+                  label="Open Tracker" screentip="Open Car Rental Tracker"
+                  supertip="Open the task pane" onAction="showTaskpane"
+                  icon="resid.Icon.16"/>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -63,15 +50,14 @@
         </AllFormFactors>
       </Host>
     </Hosts>
-
     <Resources>
       <bt:Images>
-        <bt:Image id="resid.Icon.16" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+        <bt:Image id="resid.Icon.16" DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/assets/icon-32.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="resid.Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
-        <bt:Url id="resid.FunctionFile.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
-        <bt:Url id="resid.GetStarted.LearnMoreUrl" DefaultValue="https://localhost:3000/"/>
+        <bt:Url id="resid.Taskpane.Url" DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/taskpane.html"/>
+        <bt:Url id="resid.FunctionFile.Url" DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/taskpane.html"/>
+        <bt:Url id="resid.GetStarted.LearnMoreUrl" DefaultValue="https://jamjamdgtls-maker.github.io/car-rental-excel-addin/"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="resid.GetStarted.Title" DefaultValue="Car Rental Tracker"/>
@@ -80,11 +66,5 @@
         <bt:String id="resid.GetStarted.Description" DefaultValue="Use Excel sheets as your database."/>
       </bt:LongStrings>
     </Resources>
-    <VersionOverridesV1_0>
-      <WebApplicationInfo>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-        <Resource>api://localhost:3000/5d6f1d2b-2f55-4f41-9fcb-7c1e6a0b1f01</Resource>
-      </WebApplicationInfo>
-    </VersionOverridesV1_0>
   </VersionOverrides>
 </OfficeApp>
