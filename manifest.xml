@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+           xsi:type="TaskPaneApp">
+  <Id>5d6f1d2b-2f55-4f41-9fcb-7c1e6a0b1f01</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Sheetsavy</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Car Rental Tracker (Excel Add-in)"/>
+  <Description DefaultValue="Excel-as-database: Vehicles, Customers, Rentals, Maintenance."/>
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+  <SupportUrl DefaultValue="https://localhost:3000/"/>
+  <AppDomains>
+    <AppDomain>https://localhost:3000</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Workbook"/>
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.13">
+      <Set Name="ExcelApi"/>
+    </Sets>
+  </Requirements>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="ov:VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="resid.GetStarted.Title"/>
+            <Description resid="resid.GetStarted.Description"/>
+            <LearnMoreUrl resid="resid.GetStarted.LearnMoreUrl"/>
+          </GetStarted>
+          <FunctionFile resid="resid.FunctionFile.Url"/>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="Group.Taskpane" label="Car Rental">
+                <Control xsi:type="Button" id="TaskpaneButton"
+                         label="Open Tracker"
+                         screentip="Open Car Rental Tracker"
+                         supertip="Open the task pane"
+                         onAction="showTaskpane"
+                         icon="resid.Icon.16"/>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+        <AllFormFactors>
+          <ExtensionPoint xsi:type="Taskpane">
+            <SourceLocation resid="resid.Taskpane.Url"/>
+          </ExtensionPoint>
+        </AllFormFactors>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="resid.Icon.16" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="resid.Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="resid.FunctionFile.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="resid.GetStarted.LearnMoreUrl" DefaultValue="https://localhost:3000/"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="resid.GetStarted.Title" DefaultValue="Car Rental Tracker"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="resid.GetStarted.Description" DefaultValue="Use Excel sheets as your database."/>
+      </bt:LongStrings>
+    </Resources>
+    <VersionOverridesV1_0>
+      <WebApplicationInfo>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Resource>api://localhost:3000/5d6f1d2b-2f55-4f41-9fcb-7c1e6a0b1f01</Resource>
+      </WebApplicationInfo>
+    </VersionOverridesV1_0>
+  </VersionOverrides>
+</OfficeApp>
