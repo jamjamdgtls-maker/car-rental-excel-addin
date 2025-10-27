@@ -2,10 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Car Rental Tracker — Excel Add-in</title>
-  <!-- Office.js -->
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
   <link rel="stylesheet" href="style.css"/>
 </head>
@@ -26,33 +24,24 @@
       </div>
     </div>
 
-    <!-- Bottom Excel-like Tabs -->
     <div class="sheet-tabs">
       <button class="tab active" data-view="vehicles">Vehicles</button>
-      <button class="tab" data-view="customers">Customers</button>
-      <button class="tab" data-view="rentals">Rentals</button>
-      <button class="tab" data-view="maintenance">Maintenance</button>
     </div>
 
-    <!-- Views -->
     <section class="view active" id="view-vehicles">
       <div class="card">
         <div class="controls">
           <input class="input" id="vehSearch" placeholder="Search plate/make/model">
           <button class="btn" id="vehAdd">+ Add Vehicle</button>
         </div>
-
         <div class="table-wrap">
           <table id="tblVehicles">
             <thead>
-              <tr>
-                <th>Plate</th><th>Make</th><th>Model</th><th>Year</th><th>Trans</th><th>Rate</th><th>Status</th><th>Actions</th>
-              </tr>
+              <tr><th>Plate</th><th>Make</th><th>Model</th><th>Year</th><th>Trans</th><th>Rate</th><th>Status</th><th>Actions</th></tr>
             </thead>
             <tbody></tbody>
           </table>
         </div>
-
         <div class="pager">
           <div class="note" id="vehCount">0 items</div>
           <div class="right">
@@ -63,9 +52,6 @@
         </div>
       </div>
     </section>
-
-    <!-- (Customers/Rentals/Maintenance sections omitted here for brevity)
-         Paste your full UI here and wire to excelAdapter the same way as Vehicles demo. -->
   </div>
 
   <!-- Modal + Toast -->
@@ -83,13 +69,12 @@
 
   <script src="excelAdapter.js"></script>
   <script>
-    // --- UI Helpers (small) ---
     const $ = s => document.querySelector(s);
     const el = (t,a={},c=[])=>{const n=document.createElement(t);Object.entries(a).forEach(([k,v])=>k==='html'?n.innerHTML=v:n.setAttribute(k,v));c.forEach(x=>n.appendChild(x));return n;}
     function toast(msg){ const t=el('div',{class:'t',html:msg}); document.getElementById('toast').appendChild(t); setTimeout(()=>t.remove(),2000); }
     function money(n, cur='₱'){ return cur+' '+Number(n||0).toLocaleString() }
 
-    // --- Tabs ---
+    // Tabs (just Vehicles for now)
     document.querySelectorAll('.tab').forEach(b=>{
       b.onclick=()=>{
         document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -99,14 +84,13 @@
       }
     });
 
-    // --- Modal helpers (minimal) ---
+    // Modal helpers
     function showModal(title, html, buttons){
       document.getElementById('modalTitle').textContent=title;
       document.getElementById('modalBody').innerHTML=html;
       const f=document.getElementById('modalFooter'); f.innerHTML='';
       (buttons||[]).forEach(([label,fn,klass])=>{
-        const b=el('button',{class:'btn '+(klass||''), html:label});
-        b.onclick=fn; f.appendChild(b);
+        const b=el('button',{class:'btn '+(klass||''), html:label}); b.onclick=fn; f.appendChild(b);
       });
       document.getElementById('modal').classList.add('active');
     }
@@ -114,18 +98,12 @@
     document.getElementById('modalClose').onclick = closeModal;
     document.getElementById('modal').addEventListener('click', e=>{ if(e.target.id==='modal') closeModal() });
 
-    // --- Wire toolbar ---
-    document.getElementById('btnInit').onclick = async ()=>{
-      await ExcelAdapter.ensureSchema();
-      toast('Sheets & tables ready');
-    };
-    document.getElementById('btnSeed').onclick = async ()=>{
-      await ExcelAdapter.seedDemo();
-      toast('Seeded demo data'); renderVehicles();
-    };
+    // Toolbar
+    document.getElementById('btnInit').onclick = async ()=>{ await ExcelAdapter.ensureSchema(); toast('Sheets ready'); };
+    document.getElementById('btnSeed').onclick = async ()=>{ await ExcelAdapter.seedDemo(); toast('Seeded'); renderVehicles(); };
     document.getElementById('btnRefresh').onclick = ()=> renderVehicles();
 
-    // --- Vehicles View (demo) ---
+    // Vehicles list (demo)
     const vehState = { page:1, size:10, sort:'plate', q:'' };
     document.getElementById('vehSearch').oninput = (e)=>{ vehState.q=e.target.value.toLowerCase(); vehState.page=1; renderVehicles(); }
     document.getElementById('vehPrev').onclick = ()=>{ vehState.page=Math.max(1, vehState.page-1); renderVehicles(); }
@@ -174,16 +152,10 @@
     }
 
     async function renderVehicles(){
-      await ExcelAdapter.ensureSchema(); // safe to call; no-op if exists
+      await ExcelAdapter.ensureSchema();
       const all = await ExcelAdapter.getVehicles();
-      // filter
-      let arr = all.filter(v=>{
-        const hay=(v.plate+' '+v.make+' '+v.model).toLowerCase();
-        return hay.includes(vehState.q||'');
-      });
-      // sort simple
+      let arr = all.filter(v=> (v.plate+' '+v.make+' '+v.model).toLowerCase().includes(vehState.q));
       arr.sort((a,b)=> (''+a[vehState.sort]).localeCompare(''+b[vehState.sort]));
-      // page
       const total = arr.length; const pages = Math.max(1, Math.ceil(total/vehState.size));
       vehState.page = Math.min(vehState.page, pages);
       const start=(vehState.page-1)*vehState.size; const pageArr = arr.slice(start, start+vehState.size);
@@ -192,11 +164,8 @@
       pageArr.forEach(rec=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${rec.plate}</td>
-          <td>${rec.make||''}</td>
-          <td>${rec.model||''}</td>
-          <td>${rec.year||''}</td>
-          <td>${rec.transmission||''}</td>
+          <td>${rec.plate}</td><td>${rec.make||''}</td><td>${rec.model||''}</td>
+          <td>${rec.year||''}</td><td>${rec.transmission||''}</td>
           <td>${money(rec.rate)}</td>
           <td><span class="chip">${rec.status||''}</span></td>
           <td>
@@ -208,7 +177,6 @@
       document.getElementById('vehCount').textContent = `${total} items`;
       document.getElementById('vehPageInfo').textContent = `${vehState.page} / ${pages}`;
 
-      // row actions
       tb.onclick = async (e)=>{
         const b=e.target.closest('button'); if(!b) return;
         const id = Number(b.dataset.id);
@@ -220,13 +188,7 @@
       };
     }
 
-    Office.onReady(async () => {
-      // render on start
-      try{
-        await ExcelAdapter.ensureSchema();
-      }catch(e){ console.error(e); }
-      renderVehicles();
-    });
+    Office.onReady(async () => { try{ await ExcelAdapter.ensureSchema(); }catch(e){} renderVehicles(); });
   </script>
 </body>
 </html>
