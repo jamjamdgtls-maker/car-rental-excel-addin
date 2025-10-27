@@ -92,4 +92,31 @@ const ExcelAdapter = (() => {
     await Excel.run(async (context)=>{
       const t=context.workbook.tables.getItem(sheets.vehicles.table);
       t.rows.add(null, [[
-        val(rec.plate), val(rec
+        val(rec.plate), val(rec.make), val(rec.model),
+        Number(rec.year||0), val(rec.transmission), Number(rec.rate||0), val(rec.status||"Available")
+      ]]); await context.sync();
+    });
+  }
+  async function updateVehicle(rowId, rec){
+    await ensureSchema();
+    await Excel.run(async (context)=>{
+      const t=context.workbook.tables.getItem(sheets.vehicles.table);
+      t.getDataBodyRange().getRow(rowId).values=[[
+        val(rec.plate), val(rec.make), val(rec.model),
+        Number(rec.year||0), val(rec.transmission), Number(rec.rate||0), val(rec.status||"Available")
+      ]]; await context.sync();
+    });
+  }
+  async function deleteVehicle(rowId){
+    await ensureSchema();
+    await Excel.run(async (context)=>{
+      context.workbook.tables.getItem(sheets.vehicles.table).rows.getItemAt(rowId).delete();
+      await context.sync();
+    });
+  }
+
+  return {
+    ensureSchema, seedDemo,
+    getVehicles, addVehicle, updateVehicle, deleteVehicle,
+  };
+})();
